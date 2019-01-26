@@ -1,0 +1,138 @@
+<!--
+		Name: Andres Morales
+		Date: <Put date here>
+		Class: CSCI2447, Javascript Fundamentals
+		Project 2
+--> 
+
+<!DOCTYPE html>
+<html>
+  <head>
+
+    <title>Whack-A-Mole (CSCI2447)</title>
+    
+    <!-- CSS styles: This is for me to worry about; not you. -->
+	<link href="css/game.css" rel="stylesheet" />
+  
+  </head>
+  <body>
+
+	<div id="content">
+
+		<h1>Whack-A-Mole</h1>
+		
+		<p>After clicking "start", you will have 30 seconds to click
+		as many moles as you can. The moles appear randomly so be ready! </p>
+		
+		<div id="controls">
+			<span id="score">0 pts</span>
+			<button type="button" id="start_button">Start!</button>
+		</div>
+		
+		<div id="timer">30 seconds left</div>
+		
+		<div id="gamespace">
+
+			
+		</div>
+		
+	</div>
+
+	<script src="js/jquery-3.3.1.min.js"></script>
+	
+	<script>
+	
+	var score = 0;
+	var timeLeft = 30;
+	var elem = document.getElementById('timer');
+	var timerId
+		$(document).ready( function Begin() {
+			$("#start_button").one('click', startGame);
+			$('#gamespace').on('click','img', function() {
+				updateScore();
+				$(this).hide();
+			});
+			
+		});
+
+		function startGame() {
+			$('#timer').show();
+			interval();
+			moleTimeInterval();
+			$("html").css({"background-color": "red"});
+			$("#gamespace").css({"background-color": "red"});
+			countdown();
+			addMole();
+			disableTimer();
+			setInterval(clearSpace, Math.floor(Math.random() * (6000 - 1000) + 3000));
+		};
+
+		function genereateYCoord() {
+			return yCoord = Math.floor(Math.random() * 300);
+		};
+
+		function genereateXCoord() {
+			return xCoord = Math.floor(Math.random() * 500);
+		};
+
+
+		function moleTimeInterval(){
+			var seconds = Math.floor(Math.random() * 2000);
+			myVar = setInterval(addMole, seconds);
+		};
+
+		function addMole(countdown) {
+			var x = genereateXCoord();
+			var y = genereateYCoord();
+			$('#gamespace').append(clearSpace,'<img id="mole" src="img/mole.jpg" style="top:' +y+ 'px; left: ' + x +'px;" />');
+		};
+
+		function disableTimer() {
+		setTimeout(disable, 31500);
+		};
+
+		function clearSpace() {
+			var i = 30;
+			while (i != 0) {
+				timerMole= setTimeout($('img').remove());
+				i--;
+				
+			}
+			if (i == -1) {
+				clearTimeout(timerMole);
+				i--;
+			}
+		};
+		
+		function updateScore() {
+			score++;
+			$('#score').html(score + ' pts');
+		
+		};
+		function interval() {
+			timerId = setInterval(countdown, 1000);
+			
+		};
+	
+		function countdown() {
+			if (timeLeft == -1) {
+				clearTimeout(timerId);
+				endAlert();
+				location.reload();
+			} else {
+				elem.innerHTML = timeLeft + " seconds left";
+				timeLeft--;
+			}
+		};
+
+		function endAlert(updateScore) {
+			alert(score + ' pts is your final score!!!')
+			
+		};
+
+	</script>
+	
+
+
+  </body>
+</html>
